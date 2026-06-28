@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1>Administration</h1>
+      <p>Importer un fichier Excel, modifier ou supprimer des agences.</p>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <form method="post" action="{{ url_for('import_route') }}" enctype="multipart/form-data">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-6">
+            <label class="form-label">Fichier Excel</label>
+            <input type="file" class="form-control" name="excel_file" accept=".xlsx,.xls" required>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-success">Importer</button>
+          </div>
+        </div>
+      </form>
+      <p class="mt-2 text-muted">Les fichiers Excel du dossier peuvent être importés pour ajouter ou mettre à jour les agences.</p>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-xl-3">
+      <div class="card p-3 h-100">
+        <h6 class="text-uppercase text-muted mb-2">Total agences</h6>
+        <p class="h2 mb-0">{{ total_agencies }}</p>
+      </div>
+    </div>
+    <div class="col-6 col-xl-3">
+      <div class="card p-3 h-100">
+        <h6 class="text-uppercase text-muted mb-2">Recherches enregistrées</h6>
+        <p class="h2 mb-0">{{ total_searches }}</p>
+      </div>
+    </div>
+    <div class="col-12 col-xl-3">
+      <div class="card p-3 h-100">
+        <h6 class="text-uppercase text-muted mb-2">Pays / sources</h6>
+        <ul class="list-unstyled mb-0">
+          {% for row in per_country %}
+            <li>{{ row['source'] or 'Inconnu' }}: {{ row['total'] }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-12 col-xl-3">
+      <div class="card p-3 h-100">
+        <h6 class="text-uppercase text-muted mb-2">Villes principales</h6>
+        <ul class="list-unstyled mb-0">
+          {% for row in per_city[:5] %}
+            <li>{{ row['city'] }}: {{ row['total'] }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm p-3">
+        <h5>Historique des imports</h5>
+        {% if import_history %}
+          <div class="table-responsive">
+            <table class="table table-sm mb-0 align-middle">
+              <thead>
+                <tr>
+                  <th>Fichier</th>
+                  <th>Source</th>
+                  <th>Lignes</th>
+                  <th>Ajoutées</th>
+                  <th>Mises à jour</th>
+                  <th>Doublons</th>
+                  <th>Notes</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for import_item in import_history %}
+                  <tr>
+                    <td>{{ import_item['filename'] }}</td>
+                    <td>{{ import_item['source'] }}</td>
+                    <td>{{ import_item['row_count'] }}</td>
+                    <td>{{ import_item['inserted'] }}</td>
+                    <td>{{ import_item['updated'] }}</td>
+                    <td>{{ import_item['duplicate_count'] }}</td>
+                    <td>{{ import_item['notes'] or '-' }}</td>
+                    <td>{{ import_item['created_at'] }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="mb-0">Aucun import enregistré pour le moment.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-6">
+      <div class="card shadow-sm p-3 h-100">
+        <h5>Agences les plus consultées</h5>
+        <div class="table-responsive">
+          <table class="table table-sm mb-0">
+            <thead>
+              <tr>
+                <th>Agence</th>
+                <th>Vues</th>
+                <th>Appels</th>
+                <th>Emails</th>
+                <th>Maps</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for agency in top_agencies %}
+                <tr>
+                  <td>{{ agency['name'] }}</td>
+                  <td>{{ agency['views'] }}</td>
+                  <td>{{ agency['phone_clicks'] }}</td>
+                  <td>{{ agency['email_clicks'] }}</td>
+                  <td>{{ agency['map_clicks'] }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card shadow-sm p-3 h-100">
+        <h5>Termes les plus recherchés</h5>
+        <ul class="list-unstyled mb-0">
+          {% for term in top_search_terms %}
+            <li>{{ term['query'] }} : {{ term['total'] }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <form class="mb-3" method="get" action="{{ url_for('admin') }}">
+    <div class="input-group">
+      <input type="text" class="form-control" name="q" placeholder="Rechercher une agence" value="{{ q }}">
+      <button class="btn btn-outline-primary" type="submit">Rechercher</button>
+    </div>
+  </form>
+
+  {% if agencies %}
+    <div class="table-responsive shadow-sm">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Nom</th>
+            <th>Region / Pays</th>
+            <th>Ville</th>
+            <th>Téléphone</th>
+            <th>Email</th>
+            <th>Source</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for agency in agencies %}
+            <tr>
+              <td>{{ agency['name'] }}</td>
+              <td>{{ agency['region'] or '-' }}</td>
+              <td>{{ agency['city'] or '-' }}</td>
+              <td>{{ agency['telephone'] or '-' }}</td>
+              <td>{{ agency['email'] or '-' }}</td>
+              <td>{{ agency['source'] or '-' }}</td>
+              <td class="text-end">
+                <a href="{{ url_for('edit_agency', agency_id=agency['id']) }}" class="btn btn-sm btn-primary">Modifier</a>
+                <form action="{{ url_for('delete_agency', agency_id=agency['id']) }}" method="post" class="d-inline-block" onsubmit="return confirm('Supprimer cette agence ?');">
+                  <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-secondary">Aucune agence enregistrée.</div>
+  {% endif %}
+{% endblock %}
