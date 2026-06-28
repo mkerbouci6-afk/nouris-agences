@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Administration</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    margin:30px;
+    color:#333;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:5px;
+}
+
+.card{
+    background:white;
+    border:1px solid #ccc;
+    padding:20px;
+    margin-bottom:25px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.stat{
+    background:white;
+    border:1px solid #ccc;
+    padding:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+table th,
+table td{
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:left;
+}
+
+table th{
+    background:#eee;
+}
+
+button{
+    padding:8px 16px;
+    cursor:pointer;
+}
+
+input[type=file],
+input[type=text]{
+    padding:8px;
+    width:300px;
+}
+
+.actions button{
+    margin-right:5px;
+}
+
+ul{
+    padding-left:20px;
+}
+
+.search{
+    margin-bottom:20px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Administration</h1>
+
+<p>Importer un fichier Excel, modifier ou supprimer des agences.</p>
+
+<div class="card">
+
+<h2>Importer un fichier Excel</h2>
+
+<form>
+
+<p>
+<input type="file">
+</p>
+
+<p>
+<button type="button">Importer</button>
+</p>
+
+</form>
+
+<p>
+Les fichiers Excel peuvent être importés pour ajouter ou mettre à jour les agences.
+</p>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<h3>Total agences</h3>
+<h2>125</h2>
+</div>
+
+<div class="stat">
+<h3>Recherches enregistrées</h3>
+<h2>842</h2>
+</div>
+
+<div class="stat">
+<h3>Pays / Sources</h3>
+
+<ul>
+<li>Algérie : 62</li>
+<li>France : 28</li>
+<li>Espagne : 19</li>
+<li>Italie : 16</li>
+</ul>
+
+</div>
+
+<div class="stat">
+
+<h3>Villes principales</h3>
+
+<ul>
+<li>Alger : 25</li>
+<li>Oran : 19</li>
+<li>Annaba : 15</li>
+<li>Constantine : 14</li>
+<li>Blida : 12</li>
+</ul>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Historique des imports</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Fichier</th>
+<th>Source</th>
+<th>Lignes</th>
+<th>Ajoutées</th>
+<th>Mises à jour</th>
+<th>Doublons</th>
+<th>Notes</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>agences_algerie.xlsx</td>
+<td>Algérie</td>
+<td>150</td>
+<td>140</td>
+<td>8</td>
+<td>2</td>
+<td>Aucune</td>
+<td>12/06/2026</td>
+</tr>
+
+<tr>
+<td>agences_france.xlsx</td>
+<td>France</td>
+<td>85</td>
+<td>80</td>
+<td>4</td>
+<td>1</td>
+<td>Mise à jour</td>
+<td>15/06/2026</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Agences les plus consultées</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Agence</th>
+<th>Vues</th>
+<th>Appels</th>
+<th>Emails</th>
+<th>Maps</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Agence Alger Centre</td>
+<td>215</td>
+<td>41</td>
+<td>17</td>
+<td>35</td>
+</tr>
+
+<tr>
+<td>Agence Oran</td>
+<td>180</td>
+<td>28</td>
+<td>14</td>
+<td>22</td>
+</tr>
+
+<tr>
+<td>Agence Marseille</td>
+<td>166</td>
+<td>23</td>
+<td>9</td>
+<td>17</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Termes les plus recherchés</h2>
+
+<ul>
+
+<li>Alger : 132</li>
+<li>Oran : 98</li>
+<li>Marseille : 74</li>
+<li>Alicante : 61</li>
+<li>Annaba : 45</li>
+
+</ul>
+
+</div>
+
+<div class="search">
+
+<input
+type="text"
+placeholder="Rechercher une agence">
+
+<button type="button">
+Rechercher
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Liste des agences</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nom</th>
+<th>Région / Pays</th>
+<th>Ville</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Source</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Agence Alger Centre</td>
+<td>Algérie</td>
+<td>Alger</td>
+<td>021 11 22 33</td>
+<td>alger@example.com</td>
+<td>Import Excel</td>
+
+<td class="actions">
+
+<button>Modifier</button>
+
+<button>Supprimer</button>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Agence Oran</td>
+<td>Algérie</td>
+<td>Oran</td>
+<td>041 22 33 44</td>
+<td>oran@example.com</td>
+<td>Import Excel</td>
+
+<td class="actions">
+
+<button>Modifier</button>
+
+<button>Supprimer</button>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Agence Marseille</td>
+<td>France</td>
+<td>Marseille</td>
+<td>04 91 55 66 77</td>
+<td>marseille@example.com</td>
+<td>Saisie Manuelle</td>
+
+<td class="actions">
+
+<button>Modifier</button>
+
+<button>Supprimer</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>
